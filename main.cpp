@@ -177,46 +177,42 @@ class Fraction {
   
   ~Fraction(){}
 };
-Fraction* operator+ (const Fraction &fraction1, const Fraction &fraction2){
+Fraction operator+ (const Fraction &fraction1, const Fraction &fraction2){
  int numerator, denominator;
  denominator = fraction1.get_denominator()*fraction2.get_denominator();
  numerator = fraction1.get_numerator()*fraction2.get_denominator() + fraction2.get_numerator()*fraction1.get_denominator();
- Fraction* sum = new Fraction;
- sum->set_Fraction(numerator, denominator);
+ Fraction sum (numerator, denominator);
  return sum;
 }
-Fraction* operator- (const Fraction &fraction1, const Fraction &fraction2){
+Fraction operator- (const Fraction &fraction1, const Fraction &fraction2){
   int numerator, denominator;
   denominator = fraction1.get_denominator()*fraction2.get_denominator();
   numerator = fraction1.get_numerator()*fraction2.get_denominator() - fraction2.get_numerator()*fraction1.get_denominator();
- Fraction* sub = new Fraction;
- sub->set_Fraction(numerator, denominator);
- return sub;
+  Fraction sub (numerator, denominator);
+  return sub;
 }
-Fraction* operator/ (const Fraction &fraction1, const Fraction &fraction2){
+Fraction operator/ (const Fraction &fraction1, const Fraction &fraction2){
   int numerator, denominator;
   denominator = fraction1.get_denominator()*fraction2.get_numerator();
   numerator  = fraction1.get_numerator()*fraction2.get_denominator();
-  Fraction* div = new Fraction;
-  div->set_Fraction(numerator, denominator);
+  Fraction div (numerator, denominator);
   return div;
 }
-Fraction* operator* (const Fraction &fraction1, const Fraction &fraction2){
+Fraction operator* (const Fraction &fraction1, const Fraction &fraction2){
   int numerator, denominator;
   denominator = fraction1.get_denominator()*fraction2.get_denominator();
   numerator  = fraction1.get_numerator()*fraction2.get_numerator();
-  Fraction* mul = new Fraction;
-  mul->set_Fraction(numerator, denominator);
+  Fraction mul (numerator, denominator);
   return mul;
 }
 bool operator> (const Fraction &fraction1, const Fraction &fraction2) {
-    Fraction* res = fraction1 - fraction2;
-    if (((res->get_numerator() > 0)&&(res->get_denominator() > 0))||((res->get_numerator() < 0)&&(res->get_denominator() < 0))) return true; 
+    Fraction res = fraction1 - fraction2;
+    if (((res.get_numerator() > 0)&&(res.get_denominator() > 0))||((res.get_numerator() < 0)&&(res.get_denominator() < 0))) return true; 
     else return false;
   }
 bool operator== (const Fraction &fraction1, const Fraction &fraction2){
-  Fraction* res = fraction1 - fraction2;
-  if (res->get_numerator() == 0) return true;
+  Fraction res = fraction1 - fraction2;
+  if (res.get_numerator() == 0) return true;
   else return false;
 }
 bool operator!= (const Fraction &fraction1, const Fraction &fraction2) {
@@ -238,33 +234,64 @@ bool operator <= (const Fraction &fraction1, const Fraction &fraction2){
   if (fraction1 < fraction2) return true;
   return false;
 }
-//Fraction
-int main (void) {
- {//Task 1 test
+//Task4
+typedef enum {CROSS, DIAMONDS, SPADES, HEARTS} Suits;
+typedef enum {Two = 2, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace} Quality;
+class Card {
+  Suits m_suit;
+  Quality m_quality;
+  bool m_view;
+  public:
+  Card () {}
+  void Set_Card (Suits suit, Quality quality, bool view){
+    m_suit = suit;
+    m_quality = quality;
+    m_view = view;
+  }
+  Card (Suits suit, Quality quality, bool view) {
+    Set_Card (suit, quality, view);
+  }
+  
+  void Flip (){
+    if (m_view) m_view = false;
+    else m_view = true;
+  }
+  int GetValue () const {
+    if (m_quality <= 10) return (int) m_quality;
+    if (m_quality <= 13) return 10;
+    if (m_quality == 14) return 1;
+    return 0;
+  }
+};
+void Task1_test(void){
   Square square (6);
   std::cout<<square.area()<<std::endl;
   Rectangle rectangle (2, 3);
   std::cout<<rectangle.area()<<std::endl;
-  }
-  {
-  //Task 2 test
+}
+void Task2_test(void){
   Car car;
   PassengerCar sedan;
   Bus bus ;
   Minivan minivan;
-  }
+}
+void Task3_test(void){
   Fraction fraction1 (1, 3);
   Fraction fraction2 (2, 5);
-  Fraction* sum = fraction1 + fraction2;
+  Fraction* sum = new Fraction;
+  *sum = fraction1 + fraction2;
   sum->print_fraction();
   delete sum;
-  Fraction* sub = fraction1 - fraction2;
+  Fraction* sub = new Fraction;
+  *sub = fraction1 - fraction2;
   sub->print_fraction();
   delete sub;
-  Fraction* div = fraction1/fraction2;
+  Fraction* div = new Fraction;
+  *div = fraction1/fraction2;
   div->print_fraction();
   delete div;
-  Fraction* mul = fraction1*fraction2;
+  Fraction* mul = new Fraction;
+  *mul = fraction1*fraction2;
   mul->print_fraction();
   Fraction rev = -fraction1;
   rev.print_fraction();
@@ -282,7 +309,15 @@ int main (void) {
   if (!(fraction2 != fraction3)) std::cout<<"This fractions are equal"<<std::endl;
   else std::cout<<"This fractions are not equal"<<std::endl;
   if (fraction2 <= fraction3) std::cout<<fraction2.get_numerator()<<"/"<<fraction2.get_denominator()<<"<="<<fraction3.get_numerator()<<"/"<<fraction3.get_denominator()<<std::endl;
-  
-
+}
+void Task4_test(void){
+  Card card(DIAMONDS, Ace, true);
+  std::cout<<card.GetValue()<<std::endl;
+}
+int main (void) {
+  Task1_test();
+  Task2_test();
+  Task3_test();
+  Task4_test();
   return 0;
 }
