@@ -1,15 +1,5 @@
-#include <iostream>
-#include <cstdlib>
-#include <vector>
-#include <algorithm> 
-#include <cassert>
-/*Task1 Добавить в контейнерный класс, который был написан в этом уроке, методы:
-для удаления последнего элемента массива (аналог функции pop_back() в векторах)
-для удаления первого элемента массива (аналог pop_front() в векторах)
-для сортировки массива
-для вывода на экран элементов.
-*/
 
+<<<<<<< HEAD
 class ArrayInt
 {
 private:
@@ -236,3 +226,5 @@ int main (void) {
    Task3_test();
   return 0;
 }
+=======
+>>>>>>> parent of 2a2819e (lesson4)
