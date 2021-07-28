@@ -119,6 +119,9 @@ public:
    void ArrayInt::print_ArrayInt(int index){
      std::cout<<m_data[index]<<" "; 
    }
+void Task1_test(void){
+
+}
 /*Task2 Дан вектор чисел, требуется выяснить, сколько среди них различных. Постараться использовать максимально быстрый алгоритм*/
 void Task2 (void){
     std::vector<int> myVector;
@@ -138,20 +141,98 @@ void Task2 (void){
     std::cout << (myVector.size() - number);
 }
 
+//
+typedef enum {CROSS, DIAMONDS, SPADES, HEARTS} Suits;
+typedef enum {Two = 2, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace} Quality;
+class Card {
+  Suits m_suit;
+  Quality m_quality;
+  bool m_view;
+  public:
+  Card () {}
+  void Set_Card (Suits suit, Quality quality, bool view){
+    m_suit = suit;
+    m_quality = quality;
+    m_view = view;
+  }
+  Card (Suits suit, Quality quality, bool view) {
+    Set_Card (suit, quality, view);
+  }
+  
+  void Flip (){
+    if (m_view) m_view = false;
+    else m_view = true;
+  }
+  int GetValue () const {
+    if (m_quality <= 10) return (int) m_quality;
+    if (m_quality <= 13) return 10;
+    if (m_quality == 14) return 1;
+    return 0;
+  }
+};
+
+class Hand: private Card {
+
+  std::vector<Card*>m_Cards;
+  public:
+ // Hand () {}
+  void Add (Card *pCard) {
+    m_Cards.push_back (pCard);
+  }
+  void Clear() {
+    m_Cards.clear();
+  }
+  int GetTotal() {
+    std::vector<Card*>::const_iterator it_card; // объявляем итератор только для чтения
+    it_card = m_Cards.begin(); // присваиваем ему начало вектора
+    int Total = 0;
+    int quality = 0;
+    int aces = 0;
+    while (it_card != m_Cards.end()) // пока итератор не достигнет конца
+    {
+      quality = (*it_card)->GetValue();
+      if (quality != 1) Total+= quality; 
+      else aces++;
+      it_card++; 
+    }
+    while (((Total + aces*11) > 21)&&(aces > 0)){
+      aces--;
+      Total += 1;
+    }
+    Total += aces*11;
+    return Total;
+  }
+};
+
+void Task3_test(){
+  Card D[5];
+  D[0].Set_Card (CROSS, King, true);
+  D[1].Set_Card (SPADES, Queen, true);
+  D[2].Set_Card (HEARTS, Ace, true);
+  D[3].Set_Card (DIAMONDS, Ace, true);
+//  D[4].Set_Card (SPADES, Ace, true);
+  
+  Hand hand;
+  for (int i = 0; i < 4; i++)
+    hand.Add(&D[i]);
+  std::cout << hand.GetTotal()<<std::endl;
+}
 int main (void) {
-   ArrayInt array;
+ //  Task1_test();
+      ArrayInt array;
    for (int i = 5; i > 0; i--)
      array.push_back(i);
    for (int i = 0; i < 5; i++)
      array.print_ArrayInt(i);
    std::cout<<std::endl;
    array.sort();
-/*   for (int i = 0; i < 5; i++)
+   for (int i = 0; i < 5; i++)
      std::cout<<array.pop_front()<<" ";
-   std::cout<<std::endl;*/
+   std::cout<<std::endl;
    for (int i = 0; i < 5; i++)
       array.print_ArrayInt(i);
    std::cout<<std::endl;
    Task2();
+   Task3_test();
   return 0;
 }
